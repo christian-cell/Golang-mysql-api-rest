@@ -1,4 +1,4 @@
-Flyweight continer with golang:1.16-alpine :))
+Flyweight docker container with golang:1.16-alpine :))
 
 $ docker-compose build
 
