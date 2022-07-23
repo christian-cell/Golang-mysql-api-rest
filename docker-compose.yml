@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: "test_db"
+    
+    build:
+      context: .
+      dockerfile: db.dockerfile
+    networks:
+      - default
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "secret"
+      MYSQL_DATABASE: "test"
+      MYSQL_USER: "tester"
+      MYSQL_PASSWORD: "secret"
+      
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.1.1
+    restart: 'always'
+    ports:
+      - '8087:80'
+    environment:
+      - PMA_HOST=db
+      - PMA_PASSWORD:secret
+    depends_on:
+      - db
+    links:
+      - db
+  api:
+    container_name:  "test_api"
+    #image: christianphp/golang-api-restful:1.0.5
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - .:/app/
+
+networks:
+  default:
+volumes:
+  mysql_data:
