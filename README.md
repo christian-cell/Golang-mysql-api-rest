@@ -20,3 +20,6 @@ ok ... , AS hot-reloader it's ok , but sometimes does not render errors in run t
 $ docker logs --since 30s -f <container_name_or_id>
 
 check and replace container_name_or_id , you'll get all the errors
+
+
+export GO111MODULE="on"
